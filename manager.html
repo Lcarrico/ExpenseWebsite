@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Manager Dashboard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.7/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.22/sorting/datetime-moment.js"></script>
+    
+    
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap4.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
+    
+
+    <link rel="stylesheet" href="style.css">
+    
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Expense Requests Manager</a>
+        <button class="navbar-text btn">
+            Logout
+        </button>
+
+
+    </nav>
+
+    <div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Expense <b>Requests</b></h2></div>
+                    <!-- <div class="col-sm-4">
+                        <div class="search-box">
+                            <i class="material-icons">&#xE8B6;</i>
+                            <input type="search" class="form-control" placeholder="Search&hellip;" aria-controls="expenseTable">  
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <table id="expenseTable" class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Submitted</th>
+                        <th>Reason</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Thomas </td>
+                        <td>Hardy</td>
+                        <td>$400</td>
+                        <td>i want moneys</td>
+                        <td>08/12/2006</td>
+                        <td>
+                            <textarea class="form-control" id="reason" rows="1" cols="10"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="popup" title="Image" data-toggle="tooltip"><i class="material-icons">image</i></a>
+                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Maria </td>
+                        <td>Anders</td>
+                        <td>$20</td>
+                        <td>food expense</td>
+                        <td>03/25/2020</td>
+                        <td>
+                            <textarea class="form-control" id="reason" rows="1" cols="10"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Fran </td>
+                        <td>Wilson</td>
+                        <td>$600</td>
+                        <td>flight tickets</td>
+                        <td>04/10/2019</td>
+                        <td>
+                            <textarea class="form-control" id="reason" rows="1" cols="10"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>John </td>
+                        <td>Smith</td>
+                        <td>$50</td>
+                        <td>party expense</td>
+                        <td>04/25/2020</td>
+                        <td>
+                            <textarea class="form-control" id="reason" rows="1" cols="10"></textarea>
+                        </td>
+                        <td>
+                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>  
+</div>   
+
+<script>
+    $(document).ready(function () {
+        $.fn.dataTable.moment("DD/mm/YYYY")
+        $('#expenseTable').DataTable();
+        $('.dataTables_length').addClass('bs-select');
+        $('.popup').click(function(){
+            // window.open('https://javascript.info/')
+            let newWin = window.open("about:blank", "hello", "width=200,height=200");
+        });
+    });
+
+</script>
+</body>
+</html>
