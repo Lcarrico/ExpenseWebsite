@@ -22,19 +22,51 @@
     </nav>
 
     <div class="login-form">
-        <form action="http://localhost:7000/login" method="post">
-            <h2 class="text-center">Log in</h2>       
+        <!-- <form> -->
+            <h2 class="text-center">Log in</h2>  
+
+            <span id="alert"></span>
+
+
             <div class="form-group">
-                <input name="username" type="text" class="form-control" placeholder="Username" required="required">
+                <input id="username" name="username" type="text" class="form-control" placeholder="Username" required="required">
             </div>
             <div class="form-group">
-                <input name="pswrd" type="password" class="form-control" placeholder="Password" required="required">
+                <input id="pswrd" name="pswrd" type="password" class="form-control" placeholder="Password" required="required">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                <button id="submitBtn" class="btn btn-primary btn-block" onclick="onSubmit()">Log in</button>
             </div>    
-        </form> 
+        <!-- </form>  -->
     </div>
     
+<script>
+    
+    async function onSubmit(){
+        let alert = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Oh nooo...😥</strong> Something is wrong in the fields below.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+
+
+
+        let username = document.getElementById("username").value;
+        let pswrd = document.getElementById("pswrd").value;
+
+        let login = {username:username, pswrd:pswrd};
+        details = {method:'POST', body:JSON.stringify(login)};
+        response = await fetch('http://localhost:7000/login', details)
+
+        if (response.status != 200){
+            let alertSpan = document.getElementById("alert");
+            alertSpan.innerHTML += alert;
+        }
+        console.log(response);
+    }
+
+
+</script>
 </body>
 </html>
