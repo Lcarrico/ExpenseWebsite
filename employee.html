@@ -48,7 +48,7 @@
                         <th>Reviewed</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tableBody">
                     <tr>
                         <td>1</td>
                         <td>$500.00</td>
@@ -109,10 +109,10 @@
         let index = $("table tbody tr:last-child").index();
         let row = '<tr>' +
                         '<td>0</td>' +
-                        '<td><input type="number" class="form-control" name="name" id="name"></td>' +
-                        '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-                       ' <td>Now</td>' +
-                        '<td>Pending</td>' +
+                        '<td><input type="number" class="form-control" name="inputAmount" id="inputAmount"></td>' +
+                        '<td><input type="text" class="form-control" name="inputDesc" id="inputDesc"></td>' +
+                       ' <td>now</td>' +
+                        '<td>pending</td>' +
                         '<td>N/A</td>' +
                         '<td>N/A</td>' +
                     '</tr>'
@@ -122,9 +122,50 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(".submit").click(function(){
+    $(".submit").click(async function(){
+
+        let loadedStorage = window.localStorage;
+        const loadedToken = loadedStorage.getItem("expenseToken");
+        let parsedToken = parseJwt(loadedToken);
+
+        let body = {employeeId:parsedToken.id, expenseId:0};
+
+
+        let inputAmount = document.getElementById("inputAmount").value
+        let inputDesc = document.getElementById("inputDesc").value
+    
+        body.amount = inputAmount;
+        body.employeeReason = inputDesc;
+
+        console.log(body);
+
+
+        details = {method:'POST', headers:{Authorization:loadedToken}, body:JSON.stringify(body)};
+        console.log(details);
+
+        response = await fetch('http://localhost:7000/expenses', details);
+        console.log(response)
         location.reload();
     });
+
+    function parseJwt(token) {
+        var base64Url = token.split('.')[1];
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    };
+
+    function getFormattedDate(date) {
+        let year = date.getFullYear();
+        let month = (1 + date.getMonth()).toString().padStart(2, '0');
+        let day = date.getDate().toString().padStart(2, '0');
+    
+        return month + '/' + day + '/' + year;
+    }
+
 
     function logout(){
         localStorage.removeItem('expenseToken');
@@ -151,6 +192,67 @@
             // }
         }
     }
+
+    async function loadTable(){
+        let loadedStorage = window.localStorage;
+        const loadedToken = loadedStorage.getItem("expenseToken");
+        details = {method:'GET', headers:{Authorization:loadedToken}};
+
+        response = await fetch('http://localhost:7000/expenses', details);
+        let expenses = await response.json();
+        expenses.sort((a, b) => (a.expenseId > b.expenseId) ? 1 : -1)
+
+        let id = parseJwt(loadedToken).id;
+
+        expenses = expenses.filter(expense => expense.employeeId == id);
+
+        console.log(id);
+        console.log(expenses);
+
+        let tbody = document.getElementById("tableBody");
+
+        tbody.innerHTML = "";
+
+
+        for (let expense of expenses){
+            let row = "<tr>";
+            row += 
+                `<td>${expense.expenseId}</td>
+                <td>$${expense.amount}</td>
+                <td>${expense.employeeReason}</td>`
+
+            if (expense.dateSubmitted == 0){
+                row += `<td>N/A</td>`;
+            } else{
+                let date = new Date(expense.dateSubmitted);
+                row += `<td>${getFormattedDate(date)}</td>`;
+            }
+
+            if (expense.status == undefined){
+                row += `<td>N/A</td>`;
+            } else{
+                row += `<td>${expense.status}</td>`;
+            }
+
+            if (expense.managerReason == undefined){
+                row += `<td>N/A</td>`;
+            } else{
+                row += `<td>${expense.managerReason}</td>`;
+            }
+                
+            if (expense.dateReviewed == 0){
+                row += `<td>N/A</td>`;
+            } else{
+                let date = new Date(expense.dateReviewed);
+                row += `<td>${getFormattedDate(date)}</td>`;
+            }
+
+            row += "</tr>"
+            tbody.innerHTML += row;
+        }
+    }
+
+    loadTable();
 </script>
 </body>
 </html>
