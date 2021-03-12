@@ -18,7 +18,7 @@
 <body>
     <nav class="navbar navbar-dark bg-primary">
         <a class="navbar-brand" href="#">Expense Requests Manager</a>
-        <button class="navbar-text btn">
+        <button onclick="logout()" class="navbar-text btn">
             Logout
         </button>
 
@@ -125,6 +125,32 @@
     $(".submit").click(function(){
         location.reload();
     });
+
+    function logout(){
+        localStorage.removeItem('expenseToken');
+        checkPage();
+    }
+
+    function checkPage(){
+        let loadedStorage = window.localStorage;
+        const loadedToken = loadedStorage.getItem("expenseToken");
+        console.log(loadedToken);
+        if (loadedToken == null){
+            window.location.href = './index.html';
+        }
+
+        if (loadedToken != null){
+            let parsedToken = parseJwt(loadedToken);
+            if (parsedToken.role == "manager"){
+                console.log("manager");
+                window.location.href = './manager.html';
+            }
+            // if (parsedToken.role == "employee"){
+            //     console.log("employee");
+            //     window.location.href = './employee.html';
+            // }
+        }
+    }
 </script>
 </body>
 </html>
