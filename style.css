@@ -1,6 +1,53 @@
-/* .bg-primary {
+.page-link {
+    color: #960009;
+}
+
+.page-link:hover {
+    color: #da000f;
+}
+
+.page-item.active .page-link {
+    background-color: #da000f !important;
+    border-color: #da000f !important;
+}
+
+.prepare {
+    font-family: 'Ravi Prakash', cursive;
+    font-size: 35px;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus,
+.btn-primary:focus,
+.page-link:focus
+ {   
+  border-color: #da000f !important;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #dd0412 !important;
+  outline: 0 none !important;
+}
+
+.bg-primary {
     background-color: #383838 !important;
-} */
+}
+
+.btn-primary {
+    background-color: #960009 !important;
+    border-color:#da000f !important;
+}
 
 .login-form {
     width: 340px;
