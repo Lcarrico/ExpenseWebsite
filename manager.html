@@ -202,7 +202,6 @@
 
             row += `<td>${expense.employeeReason}</td>`;
 
-
             if (expense.dateSubmitted == 0){
                 row += `<td>N/A</td>`;
             } else{
@@ -210,46 +209,33 @@
                 row += `<td>${getFormattedDate(date)}</td>`;
             }
 
-            
-            
-
-
-
             if (expense.managerReason == undefined){
-                row += `<td><textarea class="form-control" id="reason" rows="1" cols="10"></textarea></td>`;
+                row += `<td><textarea class="form-control" id="reason_${expense.expenseId}" rows="1" cols="10"></textarea></td>`;
             } else{
-                row += `<td><textarea class="form-control" id="reason" rows="1" cols="10">${expense.managerReason}</textarea></td>`;
-                // row += `<td>${expense.managerReason}</td>`;
+                row += `<td><textarea class="form-control" id="reason_${expense.expenseId}" rows="1" cols="10">${expense.managerReason}</textarea></td>`;
             }
-
-            // row +=  `<td>
-            //             <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
-            //             <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
-            //         </td>`;
-
                 
             if (expense.status == undefined){
                 row +=  `<td>
-                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
-                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                            <a href="#" onclick="approve(${expense.expenseId})" id="approve_${expense.expenseId}" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" onclick="deny(${expense.expenseId})" id="deny_${expense.expenseId}" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
                         </td>`;
             } else if (expense.status == 'pending'){
                 row +=  `<td>
-                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
-                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                            <a href="#" onclick="approve(${expense.expenseId})" id="approve_${expense.expenseId}" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" onclick="deny(${expense.expenseId})" id="deny_${expense.expenseId}" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
                         </td>`;
             } else if (expense.status == 'approved'){
                 row +=  `<td>
-                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i style="border:3px solid #36ee09;border-radius:25%;" class="material-icons">done</i></a>
-                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
+                            <a href="#" onclick="approve(${expense.expenseId})" id="approve_${expense.expenseId}" class="accept" title="Accept" data-toggle="tooltip"><i style="border:3px solid #36ee09;border-radius:25%;" class="material-icons">done</i></a>
+                            <a href="#" onclick="deny(${expense.expenseId})" id="deny_${expense.expenseId}" class="deny" title="Deny" data-toggle="tooltip"><i class="material-icons">clear</i></a>
                         </td>`;
             } else if (expense.status == 'denied'){
                 row +=  `<td>
-                            <a href="#" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
-                            <a href="#" class="deny" title="Deny" data-toggle="tooltip"><i style="border:3px solid #E34724;border-radius:25%;" class="material-icons">clear</i></a>
+                            <a href="#" onclick="approve(${expense.expenseId})" id="approve_${expense.expenseId}" class="accept" title="Accept" data-toggle="tooltip"><i class="material-icons">done</i></a>
+                            <a href="#" onclick="deny(${expense.expenseId})" id="deny_${expense.expenseId}" class="deny" title="Deny" data-toggle="tooltip"><i style="border:3px solid #E34724;border-radius:25%;" class="material-icons">clear</i></a>
                         </td>`;
             }
-
 
             row += "</tr>"
             tbody.innerHTML += row;
@@ -259,6 +245,66 @@
     }
 
     loadTable();
+
+async function approve(id){
+        let reason = document.getElementById(`reason_${id}`);
+
+        let loadedStorage = window.localStorage;
+        const loadedToken = loadedStorage.getItem("expenseToken");
+        let parsedToken = parseJwt(loadedToken);
+
+        console.log(parsedToken);
+
+        let body = {}
+        body.managerReason = reason.value;
+        body.status = "approved";
+        body.expenseId = id;
+        body.managerId = parsedToken.id;
+        body = JSON.stringify(body);
+        
+        console.log(body)
+        details = {method:'PUT', headers:{Authorization:loadedToken}, body:body};
+
+        url = `http://localhost:7000/expenses/${id}`;
+        console.log(url);
+        response = await fetch(url, details);
+        // loadTable();
+        body = response.json()
+        console.log(body);
+        location.reload();
+
+        
+
+
+    }
+
+    async function deny(id){
+        let reason = document.getElementById(`reason_${id}`);
+
+        let loadedStorage = window.localStorage;
+        const loadedToken = loadedStorage.getItem("expenseToken");
+        let parsedToken = parseJwt(loadedToken);
+
+        console.log(parsedToken);
+
+        let body = {}
+        body.managerReason = reason.value;
+        body.status = "denied";
+        body.expenseId = id;
+        body.managerId = parsedToken.id;
+        body = JSON.stringify(body);
+        
+        console.log(body)
+        details = {method:'PUT', headers:{Authorization:loadedToken}, body:body};
+
+        url = `http://localhost:7000/expenses/${id}`;
+        console.log(url);
+        response = await fetch(url, details);
+        // loadTable();
+        body = response.json()
+        console.log(body);
+        location.reload();
+    }
     
     $(document).ready(function () {
         $.fn.dataTable.moment("DD/mm/YYYY")
