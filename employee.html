@@ -146,7 +146,7 @@
         details = {method:'POST', headers:{Authorization:loadedToken}, body:JSON.stringify(body)};
         console.log(details);
 
-        response = await fetch('http://localhost:7000/expenses', details);
+        response = await fetch('http://34.66.219.31:7000/expenses', details);
         console.log(response)
         location.reload();
     });
@@ -201,7 +201,7 @@
         const loadedToken = loadedStorage.getItem("expenseToken");
         details = {method:'GET', headers:{Authorization:loadedToken}};
 
-        response = await fetch('http://localhost:7000/expenses', details);
+        response = await fetch('http://34.66.219.31:7000/expenses', details);
         let expenses = await response.json();
         expenses.sort((a, b) => (a.expenseId > b.expenseId) ? 1 : -1)
 

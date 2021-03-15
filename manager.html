@@ -184,7 +184,7 @@
         const loadedToken = loadedStorage.getItem("expenseToken");
         details = {method:'GET', headers:{Authorization:loadedToken}};
 
-        response = await fetch('http://localhost:7000/expenses', details);
+        response = await fetch('http://34.66.219.31:7000/expenses', details);
         let expenses = await response.json();
 
         expenses.sort((a, b) => (a.expenseId > b.expenseId) ? 1 : -1)
@@ -268,7 +268,7 @@ async function approve(id){
         console.log(body)
         details = {method:'PUT', headers:{Authorization:loadedToken}, body:body};
 
-        url = `http://localhost:7000/expenses/${id}`;
+        url = `http://34.66.219.31:7000/expenses/${id}`;
         console.log(url);
         response = await fetch(url, details);
         // loadTable();
@@ -300,7 +300,7 @@ async function approve(id){
         console.log(body)
         details = {method:'PUT', headers:{Authorization:loadedToken}, body:body};
 
-        url = `http://localhost:7000/expenses/${id}`;
+        url = `http://34.66.219.31:7000/expenses/${id}`;
         console.log(url);
         response = await fetch(url, details);
         // loadTable();
